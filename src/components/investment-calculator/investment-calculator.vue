@@ -63,8 +63,29 @@
         label="תשלום מס שנתי"
         right-label
       />
-      <q-btn color="primary" size="sm" @click="addDeposit"> הוסף הפקדה חד פעמית </q-btn>
     </div>
+    <div
+      class="row justify-around items-center"
+      v-for="(singleDeposit, i) in options.oneTimeDeposits"
+      :key="i"
+    >
+      <q-input
+        dense
+        :model-value="singleDeposit.amount"
+        type="number"
+        @update:model-value="updateOneTimeDeposits(i, { ...singleDeposit, amount: +$event })"
+      />
+      <q-input
+        dense
+        type="date"
+        :model-value="singleDeposit.date"
+        @update:model-value="updateOneTimeDeposits(i, { ...singleDeposit, date: $event })"
+      />
+      <q-btn flat round size="xs" @click="removeDeposit(i)">
+        <span class="icon">✕</span>
+      </q-btn>
+    </div>
+    <q-btn color="primary" size="sm" @click="addDeposit"> הוסף הפקדה חד פעמית </q-btn>
     <table v-if="options.yearsToRetirement">
       <thead>
         <th>שנים</th>
@@ -125,8 +146,8 @@ export default {
           }
         })
 
-        // Calculate profit for the month
-        const monthlyProfit = totalAmount * monthlyProfitRate
+        totalAmount += this.options.monthlyContribution * (1 - monthlyDepositFeeRate)
+        totalAmount *= (this.options.investmentReturnRate / 100 + 1) ** (1 / 12)
 
         // Calculate accumulation and deposit fees
         const accumulationFee = totalAmount * monthlyAccumulationFeeRate
@@ -136,9 +157,7 @@ export default {
         totalFees += accumulationFee + depositFee
 
         // Update total amount after profit and fees
-        totalAmount =
-          (totalAmount + monthlyProfit) * (1 - monthlyAccumulationFeeRate) +
-          this.options.monthlyContribution * (1 - monthlyDepositFeeRate)
+        totalAmount = totalAmount * (1 - monthlyAccumulationFeeRate)
 
         // Apply income tax logic at the end of each year
         if (month % 12 === 0) {
@@ -186,6 +205,12 @@ export default {
       this.updateOptions(
         'oneTimeDeposits',
         this.options.oneTimeDeposits.filter((_, i: number) => i !== index)
+      )
+    },
+    updateOneTimeDeposits(index: number, value: { amount: number; date: string }) {
+      this.updateOptions(
+        'oneTimeDeposits',
+        this.options.oneTimeDeposits.map((d, i) => (i === index ? value : d))
       )
     },
 
