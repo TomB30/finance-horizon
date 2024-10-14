@@ -24,28 +24,21 @@
       <button class="add-fund-btn" @click="openAddFundModal">+</button>
     </div>
 
-    <transition>
-      <add-fund-modal
-        v-if="isAddFundModalOpen"
-        @add-fund="addFund"
-        @close="isAddFundModalOpen = false"
-      />
-    </transition>
-
-    <transition>
-      <load-data-modal
-        v-if="isLoadModalOpen"
-        @load-data="loadData"
-        @close="isLoadModalOpen = false"
-      />
-    </transition>
-    <transition>
-      <save-data-modal
-        v-if="isSaveModalOpen"
-        @save-data="saveData"
-        @close="isSaveModalOpen = false"
-      />
-    </transition>
+    <add-fund-modal
+      :model-value="isAddFundModalOpen"
+      @add-fund="addFund"
+      @close="isAddFundModalOpen = false"
+    />
+    <load-data-modal
+      :model-value="isLoadModalOpen"
+      @load-data="loadData"
+      @close="isLoadModalOpen = false"
+    />
+    <save-data-modal
+      :model-value="isSaveModalOpen"
+      @save-data="saveData"
+      @close="isSaveModalOpen = false"
+    />
   </section>
 </template>
 

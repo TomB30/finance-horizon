@@ -1,7 +1,6 @@
 <template>
-  <section class="add-fund-modal" @click="$emit('close')">
-    <div @click.stop>
-      <button class="close-btn" @click="$emit('close')">✕</button>
+  <base-modal class="add-fund-modal" @close="$emit('close')" title="הוספת קרן">
+    <div class="modal-body">
       <label>
         <span>שם הקרן</span>
         <input type="text" v-model="fundOptions.name" />
@@ -18,20 +17,25 @@
         <span>אחוז תשואה שנתי</span>
         <input type="number" step="1" v-model="fundOptions.investmentReturnRate" />
       </label>
-      <button @click="$emit('add-fund', fundOptions)">הוסף קרן</button>
     </div>
-  </section>
+    <template #footer>
+      <button class="add-fund-btn" @click="$emit('add-fund', fundOptions)">הוסף קרן</button>
+    </template>
+  </base-modal>
 </template>
 
 <script lang="ts">
-import type { FundFeesOptions } from '@/models/retirement-calculator.model'
 import { defineComponent } from 'vue'
+
+import { BaseModal } from '@/components/common/base-modal'
+
+import type { FundFeesOptions } from '@/models/retirement-calculator.model'
 
 export default defineComponent({
   name: 'add-fund-modal',
-  components: {},
-  emits: {},
-  props: {},
+  components: {
+    BaseModal
+  },
   data() {
     return {
       fundOptions: {
@@ -50,38 +54,11 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 .add-fund-modal {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-
-  .close-btn {
-    position: absolute;
-    top: 16px;
-    right: 16px;
-    color: white;
-    background-color: #16a085;
-    border: none;
-    width: 25px;
-    height: 25px;
-    border-radius: 50%;
-  }
-
-  div {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 16px;
-    padding-top: 50px;
-    border-radius: 4px;
-
-    width: 30%;
+  .modal-body {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-row: 2;
+    grid-template-columns: 1fr 1fr;
+    flex-direction: column;
     gap: 1rem;
 
     label {
@@ -99,15 +76,14 @@ export default defineComponent({
         border-radius: 4px;
       }
     }
+  }
 
-    button:not(.close-btn) {
-      grid-column: 1 / -1;
-      padding: 0.5rem;
-      background-color: #16a085;
-      color: white;
-      border: none;
-      border-radius: 4px;
-    }
+  .add-fund-btn {
+    padding: 0.5rem 1rem;
+    background-color: #16a085;
+    color: white;
+    border: none;
+    border-radius: 4px;
   }
 }
 </style>

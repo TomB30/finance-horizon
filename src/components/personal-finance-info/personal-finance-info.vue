@@ -1,46 +1,41 @@
 <template>
   <section class="personal-finance-info">
     <div>
-      <label>
-        <span>צבירה נוכחית</span>
-        <input
-          type="number"
-          placeholder="הכנס סכום"
-          :value="options.currentAccumulatedAmount"
-          @input="
-            $emit('update-options', { ...options, currentAccumulatedAmount: +$event.target.value })
-          "
-        />
-      </label>
-      <label>
-        <span>מספר שנים לפרישה</span>
-        <input
-          type="number"
-          :value="options.yearsToRetirement"
-          @input="$emit('update-options', { ...options, yearsToRetirement: +$event.target.value })"
-        />
-      </label>
-      <label>
-        <span>שכר חודשי</span>
-        <input
-          type="number"
-          :value="options.monthlyIncome"
-          @input="$emit('update-options', { ...options, monthlyIncome: +$event.target.value })"
-        />
-      </label>
-      <label>
-        <span>אחוז הפקדה משכר</span>
-        <input
-          type="number"
-          :value="options.monthlyContributionPercentage"
-          @input="
-            $emit('update-options', {
-              ...options,
-              monthlyContributionPercentage: +$event.target.value
-            })
-          "
-        />
-      </label>
+      <q-input
+        :model-value="options.currentAccumulatedAmount"
+        @update:model-value="
+          $emit('update-options', { ...options, currentAccumulatedAmount: +event.target.value })
+        "
+        label="צבירה נוכחית"
+        stack-label
+      />
+      <q-input
+        :model-value="options.yearsToRetirement"
+        @update:model-value="
+          $emit('update-options', { ...options, yearsToRetirement: +event.target.value })
+        "
+        label="מספר שנים לפרישה"
+        stack-label
+      />
+      <q-input
+        :model-value="options.monthlyIncome"
+        @update:model-value="
+          $emit('update-options', { ...options, monthlyIncome: +event.target.value })
+        "
+        label="שכר חודשי"
+        stack-label
+      />
+      <q-input
+        :model-value="options.monthlyContributionPercentage"
+        @update:model-value="
+          $emit('update-options', {
+            ...options,
+            monthlyContributionPercentage: +event.target.value
+          })
+        "
+        label="אחוז הפקדה משכר"
+        stack-label
+      />
     </div>
   </section>
 </template>

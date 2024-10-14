@@ -6,6 +6,7 @@
 
 body {
   margin: 0;
+  color: rgba(0, 0, 0, 0.87);
   font-family:
     'Inter',
     -apple-system,
@@ -61,14 +62,6 @@ h5 {
 
 button {
   cursor: pointer;
-  transition: filter 0.3s;
-  &:hover {
-    filter: brightness(1.1);
-  }
-
-  &:active {
-    filter: brightness(0.9);
-  }
 }
 
 /* Chrome, Safari, Edge, Opera */
