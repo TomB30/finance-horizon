@@ -67,10 +67,10 @@
         dense
       />
       <q-toggle
+        dense
         :model-value="options.reduceTaxAnnually"
         @update:model-value="updateOptions('reduceTaxAnnually', $event)"
         label="תשלום מס שנתי"
-        right-label
       />
     </div>
     <div
@@ -240,15 +240,10 @@ export default {
   position: relative;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
-  direction: rtl;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
 
   .fund-name {
-    text-align: center;
-  }
-
-  h1 {
     text-align: center;
   }
 
@@ -258,11 +253,6 @@ export default {
     width: 400px;
     gap: 16px;
     grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  input {
-    width: 100px;
-    text-align: center;
   }
 
   table {
