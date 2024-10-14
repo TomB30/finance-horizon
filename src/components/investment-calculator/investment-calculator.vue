@@ -1,6 +1,8 @@
 <template>
   <section class="investment-calculator">
-    <button class="remove-btn" @click="$emit('remove-fund')">✕</button>
+    <q-btn class="remove-btn" round size="xs" @click="$emit('remove-fund')"
+      ><span class="icon">✕</span></q-btn
+    >
     <div class="fund-name" contenteditable @blur="updateOptions('name', $event.target.innerText)">
       {{ options.name }}
     </div>
@@ -170,8 +172,6 @@ export default {
         }
       }
 
-      console.log('yearlyCalculations =========>', yearlyCalculations)
-
       return yearlyCalculations
     }
   },
@@ -249,16 +249,9 @@ export default {
   }
 
   .remove-btn {
-    background-color: #f8f8f8;
-    border: none;
-    border-radius: 50%;
     position: absolute;
-    cursor: pointer;
-    font-size: 14px;
-    height: 25px;
-    width: 25px;
-    margin: 8px 8px 0 0;
-    transition: background-color 0.3s;
+    top: 6px;
+    left: 8px;
   }
 }
 </style>
