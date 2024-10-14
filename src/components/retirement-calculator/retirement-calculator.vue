@@ -1,11 +1,7 @@
 <template>
   <section class="retirement-calculator">
     <button class="remove-btn" @click="$emit('remove-fund')">✕</button>
-    <div
-      class="fund-name"
-      contenteditable
-      @blur="updateFundOptions('name', $event.target.innerText)"
-    >
+    <div class="fund-name" contenteditable @blur="updateFundName">
       {{ fundOptions.name }}
     </div>
     <div>
@@ -15,7 +11,7 @@
           type="number"
           step="0.01"
           :value="fundOptions.accumulationAnnualFee + ''"
-          @input="updateFundOptions('accumulationAnnualFee', +$event.target.value)"
+          @input="updateFundAccumulationAnnualFee"
         />
       </label>
       <label>
@@ -24,7 +20,7 @@
           type="number"
           step="0.01"
           :value="fundOptions.depositFee"
-          @input="updateFundOptions('depositFee', +$event.target.value)"
+          @input="updateDepositFee"
         />
       </label>
       <label>
@@ -33,7 +29,7 @@
           type="number"
           step="1"
           :value="fundOptions.investmentReturnRate"
-          @input="updateFundOptions('investmentReturnRate', +$event.target.value)"
+          @input="updateInvestmentReturnRate"
         />
       </label>
     </div>
@@ -78,28 +74,24 @@ export default defineComponent({
   methods: {
     calculateRetirementFund(yearsToRetirement: number) {
       // Convert annual rates to monthly rates
-      const monthlyAccumulationFeeRate = this.fundOptions.accumulationAnnualFee / 12 / 100
       const monthlyDepositFeeRate = this.fundOptions.depositFee / 100
-      const monthlyProfitRate = this.fundOptions.investmentReturnRate / 12 / 100
-
-      let totalAmount = this.options.currentAccumulatedAmount
       let totalFees = 0
 
+      const monthlyContributionDepositFee = this.options.monthlyContribution * monthlyDepositFeeRate
+      const monthlyContributionAfterFee =
+        this.options.monthlyContribution - monthlyContributionDepositFee
+      let totalAmount = this.options.currentAccumulatedAmount
+
       for (let month = 1; month <= yearsToRetirement * 12; month++) {
-        // Calculate profit
-        const monthlyProfit = totalAmount * monthlyProfitRate
+        totalAmount += monthlyContributionAfterFee
 
-        // Calculate fees
-        const accumulationFee = totalAmount * monthlyAccumulationFeeRate
-        const depositFee = this.options.monthlyContribution * monthlyDepositFeeRate
+        totalAmount *= (this.fundOptions.investmentReturnRate / 100 + 1) ** (1 / 12)
 
-        // Update total fees
-        totalFees += accumulationFee + depositFee
+        const accumulationFee = (totalAmount * this.fundOptions.accumulationAnnualFee) / 12 / 100
 
-        // Update total amount
-        totalAmount =
-          (totalAmount + monthlyProfit) * (1 - monthlyAccumulationFeeRate) +
-          this.options.monthlyContribution * (1 - monthlyDepositFeeRate)
+        totalAmount -= accumulationFee
+
+        totalFees += accumulationFee + monthlyContributionDepositFee
       }
 
       const formattedTotalAmount = Intl.NumberFormat('he-IL', {
@@ -116,8 +108,26 @@ export default defineComponent({
 
       return [formattedTotalAmount, formattedTotalFees]
     },
-    updateFundOptions(key: string, value: string) {
+    updateFundOptions(key: string, value: string | number) {
       this.$emit('update-fund-options', { ...this.fundOptions, [key]: value })
+    },
+    updateFundName(event: Event) {
+      this.updateFundOptions('name', (event.target as HTMLDivElement).innerText)
+    },
+    updateFundAccumulationAnnualFee(event: Event) {
+      this.updateFundOptions(
+        'accumulationAnnualFee',
+        parseFloat((event.target as HTMLInputElement).value)
+      )
+    },
+    updateDepositFee(event: Event) {
+      this.updateFundOptions('depositFee', parseFloat((event.target as HTMLInputElement).value))
+    },
+    updateInvestmentReturnRate(event: Event) {
+      this.updateFundOptions(
+        'investmentReturnRate',
+        parseFloat((event.target as HTMLInputElement).value)
+      )
     }
   }
 })
