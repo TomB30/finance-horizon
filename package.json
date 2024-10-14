@@ -14,11 +14,11 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
+    "@quasar/extras": "^1.16.11",
     "pinia": "^2.1.7",
-    "vue": "^3.4.29",
-    "vue-router": "^4.3.3",
     "quasar": "^2.16.2",
-    "@quasar/extras": "^1.16.11"
+    "vue": "^3.4.29",
+    "vue-router": "^4.3.3"
   },
   "devDependencies": {
     "@quasar/vite-plugin": "^1.7.0",
@@ -35,6 +35,7 @@
     "eslint-plugin-vue": "^9.23.0",
     "jsdom": "^24.1.0",
     "npm-run-all2": "^6.2.0",
+    "postcss-rtlcss": "^5.5.0",
     "prettier": "^3.2.5",
     "sass-embedded": "^1.79.4",
     "typescript": "~5.4.0",

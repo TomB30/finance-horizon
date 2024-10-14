@@ -1,6 +1,6 @@
 <template>
   <section class="investment-page">
-    <h2 class="page-title">ניהול השקעות נוספות</h2>
+    <h4 class="page-title">ניהול השקעות נוספות</h4>
     <div class="investment-list">
       <investment-calculator
         :options="investmentOptions"

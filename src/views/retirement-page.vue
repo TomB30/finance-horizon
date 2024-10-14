@@ -1,8 +1,10 @@
 <template>
   <section class="retirement-page">
-    <h2 class="page-title">ניהול הקופה הפנסיונית שלי</h2>
-    <button class="action-btn" @click="isLoadModalOpen = true">טען נתונים</button>
-    <button class="action-btn" @click="isSaveModalOpen = true">שמור נתונים</button>
+    <h4 class="page-title">ניהול הקופה הפנסיונית שלי</h4>
+    <q-btn class="action-btn q-mx-md" color="primary" @click="isLoadModalOpen = true"
+      >טען נתונים</q-btn
+    >
+    <q-btn class="action-btn" color="primary" @click="isSaveModalOpen = true">שמור נתונים</q-btn>
     <div class="header">
       <personal-finance-info
         :options="personalFinancialInfo"
@@ -10,9 +12,9 @@
       />
       <div></div>
     </div>
-    <hr />
-    <h3 class="sub-title">השוואת דמי ניהול בין קרנות</h3>
-    <div class="compare-list">
+    <q-separator />
+    <h5 class="sub-title">השוואת דמי ניהול בין קרנות</h5>
+    <div class="row q-mr-md q-gutter-md items-start">
       <retirement-calculator
         v-for="(fund, i) in funds"
         :key="fund.name"
@@ -21,9 +23,8 @@
         @update-fund-options="updateFund(i, $event)"
         @remove-fund="funds.splice(i, 1)"
       />
-      <button class="add-fund-btn" @click="openAddFundModal">+</button>
+      <q-btn color="primary" @click="openAddFundModal">הוסף קרן</q-btn>
     </div>
-
     <add-fund-modal
       :model-value="isAddFundModalOpen"
       @add-fund="addFund"
@@ -116,7 +117,6 @@ export default defineComponent({
       this.funds[index] = fund
     },
     loadData(idNumber: string) {
-      console.log('idNumber =========>', idNumber)
       const loadedData = localStorage.getItem(idNumber)
       if (loadedData) {
         const parsedData = JSON.parse(loadedData)
@@ -152,16 +152,6 @@ export default defineComponent({
   align-items: end;
   padding: 8px 0;
 }
-.action-btn {
-  background-color: #16a085;
-  color: white;
-  border: none;
-  font-size: 16px;
-  padding: 8px 16px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  margin-inline: 16px;
-}
 
 .compare-list {
   padding: 8px 16px;
@@ -176,33 +166,6 @@ export default defineComponent({
   padding: 0 16px;
 }
 
-.add-fund-btn {
-  height: 35px;
-  width: 35px;
-  border-radius: 2rem;
-  border: none;
-  background-color: #16a085;
-  color: white;
-  font-size: 30px;
-  cursor: pointer;
-  transition:
-    width 0.3s,
-    filter 0.3s;
-  text-align: right;
-  padding-right: 9px;
-
-  &:hover {
-    width: 100px;
-    &::after {
-      content: 'הוסף קרן';
-      white-space: nowrap;
-      position: relative;
-      font-size: 15px;
-      top: -6px;
-      left: -6px;
-    }
-  }
-}
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.3s ease;

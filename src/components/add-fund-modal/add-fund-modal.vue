@@ -1,25 +1,28 @@
 <template>
   <base-modal class="add-fund-modal" @close="$emit('close')" title="הוספת קרן">
     <div class="modal-body">
-      <label>
-        <span>שם הקרן</span>
-        <input type="text" v-model="fundOptions.name" />
-      </label>
-      <label>
-        <span>דמי ניהול מצבירה</span>
-        <input type="number" step="0.01" v-model="fundOptions.accumulationAnnualFee" />
-      </label>
-      <label>
-        <span>דמי ניהול מהפקדה</span>
-        <input type="number" step="0.01" v-model="fundOptions.depositFee" />
-      </label>
-      <label>
-        <span>אחוז תשואה שנתי</span>
-        <input type="number" step="1" v-model="fundOptions.investmentReturnRate" />
-      </label>
+      <q-input v-model="fundOptions.name" label="שם הקרן" />
+      <q-input
+        v-model="fundOptions.accumulationAnnualFee"
+        type="number"
+        step="0.01"
+        label="דמי ניהול מצבירה"
+      />
+      <q-input
+        v-model="fundOptions.depositFee"
+        type="number"
+        step="0.01"
+        label="דמי ניהול מהפקדה"
+      />
+      <q-input
+        v-model="fundOptions.investmentReturnRate"
+        type="number"
+        step="0.1"
+        label="אחוז תשואה שנתי"
+      />
     </div>
     <template #footer>
-      <button class="add-fund-btn" @click="$emit('add-fund', fundOptions)">הוסף קרן</button>
+      <q-btn color="primary" @click="$emit('add-fund', fundOptions)">הוסף קרן</q-btn>
     </template>
   </base-modal>
 </template>
@@ -84,6 +87,10 @@ export default defineComponent({
     color: white;
     border: none;
     border-radius: 4px;
+  }
+
+  .q-input * {
+    direction: rtl !important;
   }
 }
 </style>

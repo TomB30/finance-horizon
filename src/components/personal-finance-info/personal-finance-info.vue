@@ -3,38 +3,35 @@
     <div>
       <q-input
         :model-value="options.currentAccumulatedAmount"
+        type="number"
         @update:model-value="
-          $emit('update-options', { ...options, currentAccumulatedAmount: +event.target.value })
+          $emit('update-options', { ...options, currentAccumulatedAmount: +$event })
         "
         label="צבירה נוכחית"
-        stack-label
       />
       <q-input
         :model-value="options.yearsToRetirement"
-        @update:model-value="
-          $emit('update-options', { ...options, yearsToRetirement: +event.target.value })
-        "
+        type="number"
+        @update:model-value="$emit('update-options', { ...options, yearsToRetirement: +$event })"
         label="מספר שנים לפרישה"
-        stack-label
       />
       <q-input
         :model-value="options.monthlyIncome"
-        @update:model-value="
-          $emit('update-options', { ...options, monthlyIncome: +event.target.value })
-        "
+        type="number"
+        @update:model-value="$emit('update-options', { ...options, monthlyIncome: +$event })"
         label="שכר חודשי"
-        stack-label
       />
       <q-input
         :model-value="options.monthlyContributionPercentage"
+        type="number"
         @update:model-value="
           $emit('update-options', {
             ...options,
-            monthlyContributionPercentage: +event.target.value
+            monthlyContributionPercentage: +$event
           })
         "
         label="אחוז הפקדה משכר"
-        stack-label
+        step="0.01"
       />
     </div>
   </section>
@@ -48,7 +45,7 @@ import type { PersonalFinanceInfoOptions } from '@/models/retirement-calculator.
 export default defineComponent({
   name: 'personal-finance-info',
   components: {},
-  emits: {},
+  emits: ['update-options'],
   props: {
     options: {
       type: Object as () => PersonalFinanceInfoOptions,

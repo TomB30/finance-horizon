@@ -20,3 +20,13 @@ input::-webkit-inner-spin-button {
 input[type='number'] {
   -moz-appearance: textfield;
 }
+
+.q-field__label {
+  right: 0 !important;
+}
+
+label.q-field .q-field__label {
+  right: 0 !important;
+  left: unset !important;
+  transform: translateY(-40%) scale(0.75) translateX(33%) !important;
+}

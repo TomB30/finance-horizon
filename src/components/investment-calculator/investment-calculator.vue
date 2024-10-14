@@ -4,78 +4,64 @@
     <div class="fund-name" contenteditable @blur="updateOptions('name', $event.target.innerText)">
       {{ options.name }}
     </div>
-    <div>
-      <label>
-        <span>סכום צבירה נוכחי</span>
-        <input
-          type="number"
-          step="1"
-          :value="options.currentAccumulatedAmount"
-          @input="updateOptions('currentAccumulatedAmount', +$event.target.value)"
-        />
-      </label>
-      <label>
-        <span>הפקדה חודשית</span>
-        <input
-          type="number"
-          step="1"
-          :value="options.monthlyContribution"
-          @input="updateOptions('monthlyContribution', +$event.target.value)"
-        />
-      </label>
-      <label>
-        <span>דמי ניהול מצבירה</span>
-        <input
-          type="number"
-          step="0.01"
-          :value="options.accumulationAnnualFee + ''"
-          @input="updateOptions('accumulationAnnualFee', +$event.target.value)"
-        />
-      </label>
-      <label>
-        <span>דמי ניהול מהפקדה</span>
-        <input
-          type="number"
-          step="0.01"
-          :value="options.depositFee"
-          @input="updateOptions('depositFee', +$event.target.value)"
-        />
-      </label>
-      <label>
-        <span>אחוז תשואה שנתי</span>
-        <input
-          type="number"
-          step="1"
-          :value="options.investmentReturnRate"
-          @input="updateOptions('investmentReturnRate', +$event.target.value)"
-        />
-      </label>
-      <label>
-        <span>שיעור מס הכנסה</span>
-        <input
-          type="number"
-          step="1"
-          :value="options.incomeTaxRate"
-          @input="updateOptions('incomeTaxRate', +$event.target.value)"
-        />
-      </label>
-      <label>
-        <span>שנים עד פרישה</span>
-        <input
-          type="number"
-          step="1"
-          :value="options.yearsToRetirement"
-          @input="updateOptions('yearsToRetirement', +$event.target.value)"
-        />
-      </label>
-      <label>
-        <span>תשלום מס שנתי</span>
-        <input
-          type="checkbox"
-          :checked="options.reduceTaxAnnually"
-          @change="updateOptions('reduceTaxAnnually', $event.target.checked)"
-        />
-      </label>
+    <div class="wrapper">
+      <q-input
+        :model-value="options.currentAccumulatedAmount"
+        @update:model-value="updateOptions('currentAccumulatedAmount', +$event)"
+        label="סכום צבירה נוכחי"
+        type="number"
+        dense
+      />
+      <q-input
+        :model-value="options.monthlyContribution"
+        @update:model-value="updateOptions('monthlyContribution', +$event)"
+        label="הפקדה חודשית"
+        type="number"
+        dense
+      />
+
+      <q-input
+        :model-value="options.accumulationAnnualFee"
+        @update:model-value="updateOptions('accumulationAnnualFee', +$event)"
+        label="דמי ניהול מצבירה"
+        type="number"
+        dense
+      />
+      <q-input
+        :model-value="options.depositFee"
+        @update:model-value="updateOptions('depositFee', +$event)"
+        label="דמי ניהול מהפקדה"
+        type="number"
+        dense
+      />
+      <q-input
+        :model-value="options.investmentReturnRate"
+        @update:model-value="updateOptions('investmentReturnRate', +$event)"
+        label="אחוז תשואה שנתי"
+        type="number"
+        dense
+      />
+      <q-input
+        :model-value="options.incomeTaxRate"
+        @update:model-value="updateOptions('incomeTaxRate', +$event)"
+        label="שיעור מס הכנסה"
+        type="number"
+        dense
+      />
+      <q-input
+        :model-value="options.yearsToRetirement"
+        @update:model-value="updateOptions('yearsToRetirement', +$event)"
+        label="שנים עד פרישה"
+        type="number"
+        dense
+      />
+      <q-toggle
+        :model-value="options.reduceTaxAnnually"
+        @update:model-value="updateOptions('reduceTaxAnnually', $event)"
+        label="תשלום מס שנתי"
+        right-label
+      />
+      <q-btn color="primary" size="sm" @click="addDeposit"> הוסף הפקדה חד פעמית </q-btn>
     </div>
     <table v-if="options.yearsToRetirement">
       <thead>
@@ -221,7 +207,6 @@ export default {
   direction: rtl;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  min-width: 400px;
 
   .fund-name {
     text-align: center;
@@ -231,27 +216,17 @@ export default {
     text-align: center;
   }
 
-  div {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+  .wrapper {
     padding: 8px;
-
-    label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
+    display: grid;
+    width: 400px;
+    gap: 16px;
+    grid-template-columns: 1fr 1fr 1fr;
   }
 
   input {
     width: 100px;
     text-align: center;
-  }
-
-  input[type='checkbox'] {
-    width: 100px;
-    height: 20px;
   }
 
   table {

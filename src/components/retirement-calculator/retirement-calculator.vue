@@ -1,37 +1,35 @@
 <template>
   <section class="retirement-calculator">
-    <button class="remove-btn" @click="$emit('remove-fund')">✕</button>
-    <div class="fund-name" contenteditable @blur="updateFundName">
+    <q-btn class="remove-btn" round size="xs" @click="$emit('remove-fund')"
+      ><span class="icon">✕</span></q-btn
+    >
+    <div class="fund-name q-my-sm" contenteditable @blur="updateFundName">
       {{ fundOptions.name }}
     </div>
-    <div>
-      <label>
-        <span>דמי ניהול מצבירה</span>
-        <input
-          type="number"
-          step="0.01"
-          :value="fundOptions.accumulationAnnualFee + ''"
-          @input="updateFundAccumulationAnnualFee"
-        />
-      </label>
-      <label>
-        <span>דמי ניהול מהפקדה</span>
-        <input
-          type="number"
-          step="0.01"
-          :value="fundOptions.depositFee"
-          @input="updateDepositFee"
-        />
-      </label>
-      <label>
-        <span>אחוז תשואה שנתי</span>
-        <input
-          type="number"
-          step="1"
-          :value="fundOptions.investmentReturnRate"
-          @input="updateInvestmentReturnRate"
-        />
-      </label>
+    <div class="wrapper column q-ma-sm">
+      <q-input
+        stack-label
+        step="0.01"
+        type="number"
+        label="דמי ניהול מצבירה"
+        :model-value="fundOptions.accumulationAnnualFee"
+        @update:model-value="updateFundAccumulationAnnualFee"
+      />
+      <q-input
+        stack-label
+        step="0.01"
+        type="number"
+        label="דמי ניהול מהפקדה"
+        :model-value="fundOptions.depositFee"
+        @update:model-value="updateDepositFee"
+      />
+      <q-input
+        step="0.1"
+        type="number"
+        label="אחוז תשואה שנתי"
+        :model-value="fundOptions.investmentReturnRate"
+        @update:model-value="updateInvestmentReturnRate"
+      />
     </div>
     <table v-if="options.yearsToRetirement">
       <thead>
@@ -40,7 +38,7 @@
         <th>דמי ניהול</th>
       </thead>
       <tbody>
-        <tr v-for="i in options.yearsToRetirement" :key="i">
+        <tr v-for="i in +options.yearsToRetirement" :key="i">
           <td>{{ i }}</td>
           <td>{{ calculateRetirementFund(i)[0] }}</td>
           <td>{{ calculateRetirementFund(i)[1] }}</td>
@@ -114,20 +112,14 @@ export default defineComponent({
     updateFundName(event: Event) {
       this.updateFundOptions('name', (event.target as HTMLDivElement).innerText)
     },
-    updateFundAccumulationAnnualFee(event: Event) {
-      this.updateFundOptions(
-        'accumulationAnnualFee',
-        parseFloat((event.target as HTMLInputElement).value)
-      )
+    updateFundAccumulationAnnualFee(val: string | number | null) {
+      this.updateFundOptions('accumulationAnnualFee', val ? parseFloat(val as string) : 0)
     },
-    updateDepositFee(event: Event) {
-      this.updateFundOptions('depositFee', parseFloat((event.target as HTMLInputElement).value))
+    updateDepositFee(val: string | number | null) {
+      this.updateFundOptions('depositFee', val ? parseFloat(val as string) : 0)
     },
-    updateInvestmentReturnRate(event: Event) {
-      this.updateFundOptions(
-        'investmentReturnRate',
-        parseFloat((event.target as HTMLInputElement).value)
-      )
+    updateInvestmentReturnRate(val: string | number | null) {
+      this.updateFundOptions('investmentReturnRate', val ? parseFloat(val as string) : 0)
     }
   }
 })
@@ -145,28 +137,23 @@ export default defineComponent({
 
   .fund-name {
     text-align: center;
+    margin: 6px auto;
+    width: 70%;
   }
 
   h1 {
     text-align: center;
   }
 
-  div {
-    display: flex;
-    flex-direction: column;
+  .column {
     gap: 8px;
-    padding: 8px;
-
-    label {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
   }
 
-  input {
-    width: 60px;
-    text-align: center;
+  .wrapper {
+    display: grid;
+    width: 320px;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 8px;
   }
 
   table {
@@ -189,16 +176,9 @@ export default defineComponent({
   }
 
   .remove-btn {
-    background-color: #f8f8f8;
-    border: none;
-    border-radius: 50%;
     position: absolute;
-    cursor: pointer;
-    font-size: 14px;
-    height: 25px;
-    width: 25px;
-    margin: 8px 8px 0 0;
-    transition: background-color 0.3s;
+    top: 6px;
+    left: 8px;
   }
 }
 </style>
