@@ -1,0 +1,89 @@
+// https://quasar.dev/style/sass-scss-variables#variables-list
+
+$runai-pink: #df1995;
+$runai-orange: #fc774a;
+
+$primary: #16a085;
+$primary-10: rgba(6, 84, 254, 0.1);
+$secondary: $runai-pink;
+$accent: #9c27b0;
+
+$dark: #1d1d1d;
+$dark-gray: #555555;
+$positive: #616161;
+$negative: #ef5350;
+$info: #2196f3;
+$warning: #ffab00;
+$navy: #00263e;
+
+$success: #4caf50;
+
+// colors
+$white: #ffffff;
+$white-05: rgba(255, 255, 255, 0.05);
+$white-10: rgba(255, 255, 255, 0.1);
+$white-12: rgba(255, 255, 255, 0.12);
+$white-20: rgba(255, 255, 255, 0.2);
+$white-30: rgba(255, 255, 255, 0.3);
+$white-60: rgba(255, 255, 255, 0.6);
+$white-80: rgba(255, 255, 255, 0.8);
+
+$black-10: rgba(0, 0, 0, 0.1);
+$black-12: rgba(0, 0, 0, 0.12);
+$black-15: rgba(0, 0, 0, 0.15);
+$black-20: rgba(0, 0, 0, 0.2);
+$black-25: rgba(0, 0, 0, 0.25);
+$black-30: rgba(0, 0, 0, 0.3);
+$black-35: rgba(0, 0, 0, 0.35);
+$black-40: rgba(0, 0, 0, 0.4);
+$black-45: rgba(0, 0, 0, 0.45);
+$black-54: rgba(0, 0, 0, 0.54);
+$black-70: rgba(0, 0, 0, 0.7);
+$black-default-highcharts: rgba(51, 51, 51, 1);
+
+$light-turquoise-10: rgba(47, 198, 176, 0.1);
+$light-turquoise-100: rgba(47, 198, 176, 1);
+
+$light-blue-10: rgba(76, 148, 252, 0.1);
+$light-blue-10-2: rgba(33, 150, 243, 0.1);
+$light-blue-100: rgba(76, 148, 252);
+$dark-blue-1: rgba(0, 38, 62, 1);
+
+$light-navy-0: rgba(0, 38, 62, 0);
+$light-navy-70: rgba(0, 38, 62, 0.7);
+$dark-navy: rgba(35, 40, 55, 1);
+
+$yellow-20: rgba(255, 171, 0, 0.2);
+$lighter-green: #3dd37a;
+
+$light-grey: #fafafa;
+$dark-purple: rgba(93, 81, 121);
+
+$main-font-color: $black-70;
+$body-background-color: #f1f3f4;
+
+$table-selected-background: rgba(6, 84, 254, 0.05); // primary color
+$runai-page-actions-min-height: 60px;
+$option-selected: rgba(61, 90, 254, 0.07);
+
+$header-height: 60px;
+$sidebar-mini-width: 60px;
+
+// runai variables
+$runai-select-card-checkmark-size: 21px;
+$runai-select-card-checkmark-position: 3px;
+$grey-input-color: #e8e8e8;
+
+// highcharts variables
+$hc-table-caption: #555;
+$hc-table-border: #ebebeb;
+$hc-table-background: #f8f8f8;
+$hc-table-hover: #f1f7ff;
+
+$tree-icon: #9e9e9e;
+
+// side nav
+$side-nav-active-link: #494f5b;
+$side-nav-sub-item-active-link: rgba(223, 25, 149, 0.08);
+$side-nav-toggle-background: rgba(74, 78, 87, 1);
+$runai-table-shadow: 0px 2px 5px -2px $black-15;

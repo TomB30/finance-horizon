@@ -16,9 +16,12 @@
   "dependencies": {
     "pinia": "^2.1.7",
     "vue": "^3.4.29",
-    "vue-router": "^4.3.3"
+    "vue-router": "^4.3.3",
+    "quasar": "^2.16.2",
+    "@quasar/extras": "^1.16.11"
   },
   "devDependencies": {
+    "@quasar/vite-plugin": "^1.7.0",
     "@rushstack/eslint-patch": "^1.8.0",
     "@tsconfig/node20": "^20.1.4",
     "@types/jsdom": "^21.1.7",
