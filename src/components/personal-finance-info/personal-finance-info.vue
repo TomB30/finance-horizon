@@ -8,6 +8,7 @@
           $emit('update-options', { ...options, currentAccumulatedAmount: +$event })
         "
         label="צבירה נוכחית"
+        suffix="₪"
       />
       <q-input
         :model-value="options.yearsToRetirement"
@@ -20,6 +21,7 @@
         type="number"
         @update:model-value="$emit('update-options', { ...options, monthlyIncome: +$event })"
         label="שכר חודשי"
+        suffix="₪"
       />
       <q-input
         :model-value="options.monthlyContributionPercentage"
@@ -32,6 +34,7 @@
         "
         label="אחוז הפקדה משכר"
         step="0.01"
+        suffix="%"
       />
     </div>
   </section>
@@ -68,22 +71,8 @@ export default defineComponent({
   div {
     display: flex;
     justify-content: flex-start;
-    gap: 30px;
-
-    label {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-
-      span {
-        font-size: 1rem;
-        white-space: nowrap;
-      }
-
-      input {
-        width: 150px;
-      }
-    }
+    gap: 16px;
+    width: 600px;
   }
 }
 </style>

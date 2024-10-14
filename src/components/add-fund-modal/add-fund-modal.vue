@@ -7,18 +7,21 @@
         type="number"
         step="0.01"
         label="דמי ניהול מצבירה"
+        suffix="%"
       />
       <q-input
         v-model="fundOptions.depositFee"
         type="number"
         step="0.01"
         label="דמי ניהול מהפקדה"
+        suffix="%"
       />
       <q-input
         v-model="fundOptions.investmentReturnRate"
         type="number"
         step="0.1"
         label="אחוז תשואה שנתי"
+        suffix="%"
       />
     </div>
     <template #footer>

@@ -14,6 +14,7 @@
         label="דמי ניהול מצבירה"
         :model-value="fundOptions.accumulationAnnualFee"
         @update:model-value="updateFundAccumulationAnnualFee"
+        suffix="%"
       />
       <q-input
         stack-label
@@ -22,6 +23,7 @@
         label="דמי ניהול מהפקדה"
         :model-value="fundOptions.depositFee"
         @update:model-value="updateDepositFee"
+        suffix="%"
       />
       <q-input
         step="0.1"
@@ -29,6 +31,7 @@
         label="אחוז תשואה שנתי"
         :model-value="fundOptions.investmentReturnRate"
         @update:model-value="updateInvestmentReturnRate"
+        suffix="%"
       />
     </div>
     <table v-if="options.yearsToRetirement">
