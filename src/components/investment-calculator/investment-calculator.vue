@@ -13,6 +13,7 @@
         label="סכום צבירה נוכחי"
         type="number"
         dense
+        suffix="₪"
       />
       <q-input
         :model-value="options.monthlyContribution"
@@ -20,6 +21,7 @@
         label="הפקדה חודשית"
         type="number"
         dense
+        suffix="₪"
       />
 
       <q-input
@@ -27,21 +29,27 @@
         @update:model-value="updateOptions('accumulationAnnualFee', +$event)"
         label="דמי ניהול מצבירה"
         type="number"
+        step="0.01"
         dense
+        suffix="%"
       />
       <q-input
         :model-value="options.depositFee"
         @update:model-value="updateOptions('depositFee', +$event)"
         label="דמי ניהול מהפקדה"
         type="number"
+        step="0.01"
         dense
+        suffix="%"
       />
       <q-input
         :model-value="options.investmentReturnRate"
         @update:model-value="updateOptions('investmentReturnRate', +$event)"
         label="אחוז תשואה שנתי"
         type="number"
+        step="0.1"
         dense
+        suffix="%"
       />
       <q-input
         :model-value="options.incomeTaxRate"
@@ -49,6 +57,7 @@
         label="שיעור מס הכנסה"
         type="number"
         dense
+        suffix="%"
       />
       <q-input
         :model-value="options.yearsToRetirement"
@@ -85,7 +94,9 @@
         <span class="icon">✕</span>
       </q-btn>
     </div>
-    <q-btn color="primary" size="sm" @click="addDeposit"> הוסף הפקדה חד פעמית </q-btn>
+    <q-btn color="primary" class="q-ma-sm" size="sm" @click="addDeposit">
+      הוסף הפקדה חד פעמית
+    </q-btn>
     <table v-if="options.yearsToRetirement">
       <thead>
         <th>שנים</th>
