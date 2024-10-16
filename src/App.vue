@@ -14,12 +14,16 @@
 import { defineComponent } from 'vue'
 import { AppSideNav } from './components/app-side-nav'
 import { AppHeader } from './components/app-header'
+import { useAuthStore } from './stores/auth.store'
 
 export default defineComponent({
   name: 'App',
   components: {
     AppSideNav,
     AppHeader
+  },
+  async created() {
+    await useAuthStore().getAuthenticatedUser()
   }
 })
 </script>

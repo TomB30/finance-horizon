@@ -1,8 +1,6 @@
 <template>
   <base-modal class="save-data-modal" @click="$emit('close')" title="שמור נתונים">
-    <div>
-      <q-input v-model="idNumber" label="מספר תעודת זהות" type="number" />
-    </div>
+    <p>האם אתה בטוח שברצונך לשמור את נתוני הפנסיה?</p>
     <template #footer>
       <q-btn color="primary" size="sm" @click="$emit('save-data', idNumber)">שמור נתונים</q-btn>
     </template>

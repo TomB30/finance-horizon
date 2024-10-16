@@ -1,6 +1,6 @@
 <template>
   <section class="retirement-calculator">
-    <q-btn class="remove-btn" round size="xs" @click="$emit('remove-fund')"
+    <q-btn v-if="removeable" class="remove-btn" round size="xs" @click="$emit('remove-fund')"
       ><span class="icon">✕</span></q-btn
     >
     <div class="fund-name q-my-sm" contenteditable @blur="updateFundName">
@@ -70,6 +70,10 @@ export default defineComponent({
     fundOptions: {
       type: Object as PropType<FundFeesOptions>,
       required: true
+    },
+    removeable: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -136,7 +140,7 @@ export default defineComponent({
   direction: rtl;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
-  min-width: 300px;
+  width: 340px;
 
   .fund-name {
     text-align: center;
@@ -154,7 +158,6 @@ export default defineComponent({
 
   .wrapper {
     display: grid;
-    width: 320px;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 8px;
   }

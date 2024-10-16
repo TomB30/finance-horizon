@@ -3,7 +3,7 @@
     <div class="login-card">
       <h5>Horzion</h5>
       <div v-if="!isLoggedIn && !isSignUp" class="login-form">
-        <q-card-section class="column q-gutter-md">
+        <q-card-section class="column q-gutter-sm">
           <q-input
             no-error-icon
             outlined
@@ -20,15 +20,15 @@
         </q-card-actions>
       </div>
       <div v-if="isLoggedIn && loggedInUser" class="logout-form">
-        <q-card-section class="column q-gutter-md">
-          <p>ברוך הבא, {{ loggedInUser.fullName }}</p>
+        <q-card-section class="column q-gutter-sm">
+          <p>ברוכ/ה הבא/ה, {{ loggedInUser.fullName }}</p>
         </q-card-section>
         <q-card-actions class="row">
           <q-btn flat label="התנתק" color="primary" @click="logout" />
         </q-card-actions>
       </div>
       <div v-if="!isLoggedIn && isSignUp" class="signup-form">
-        <q-card-section class="column q-gutter-md">
+        <q-card-section class="column q-gutter-sm">
           <q-input no-error-icon outlined v-model="fullName" label="שם מלא" />
           <q-input
             no-error-icon
@@ -173,9 +173,9 @@ export default defineComponent({
       margin: 16px 8px;
     }
     position: absolute;
-    top: 30%;
+    top: 20%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translateX(-50%);
     width: 300px;
     border-radius: 4px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);

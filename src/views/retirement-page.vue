@@ -1,42 +1,38 @@
 <template>
   <section class="retirement-page">
     <h4 class="page-title">ניהול הקופה הפנסיונית שלי</h4>
-    <q-btn class="action-btn q-mx-md" color="primary" @click="isLoadModalOpen = true"
-      >טען נתונים</q-btn
-    >
-    <q-btn class="action-btn" color="primary" @click="isSaveModalOpen = true">שמור נתונים</q-btn>
     <div class="header">
       <personal-finance-info
         :options="personalFinancialInfo"
         @update-options="personalFinancialInfo = $event"
       />
+      <q-btn class="action-btn q-mr-md" color="primary" @click="isSaveModalOpen = true"
+        >שמור נתונים</q-btn
+      >
     </div>
     <q-separator />
     <h5 class="sub-title">השוואת דמי ניהול בין קרנות</h5>
     <div class="row q-mr-md q-gutter-md items-start">
-      <retirement-calculator
-        v-for="(fund, i) in funds"
-        :key="fund.name"
-        :options="fundsOptions"
-        :fund-options="fund"
-        @update-fund-options="updateFund(i, $event)"
-        @remove-fund="funds.splice(i, 1)"
-      />
-      <q-btn color="primary" @click="openAddFundModal">הוסף קרן</q-btn>
+      <template v-for="(fund, i) in funds" :key="fund.name">
+        <retirement-calculator
+          :removeable="i !== 0"
+          :options="fundsOptions"
+          :fund-options="fund"
+          @update-fund-options="updateFund(i, $event)"
+          @remove-fund="funds.splice(i, 1)"
+        />
+        <q-separator v-if="i === 0" vertical />
+      </template>
+      <q-btn color="primary" @click="openAddFundModal">הוסף קרן להשוואה</q-btn>
     </div>
     <add-fund-modal
       :model-value="isAddFundModalOpen"
       @add-fund="addFund"
       @close="isAddFundModalOpen = false"
     />
-    <load-data-modal
-      :model-value="isLoadModalOpen"
-      @load-data="loadData"
-      @close="isLoadModalOpen = false"
-    />
     <save-data-modal
       :model-value="isSaveModalOpen"
-      @save-data="saveData"
+      @save-data="saveRetirementData"
       @close="isSaveModalOpen = false"
     />
   </section>
@@ -48,7 +44,6 @@ import { defineComponent } from 'vue'
 import { RetirementCalculator } from '@/components/retirement-calculator'
 import { PersonalFinanceInfo } from '@/components/personal-finance-info'
 import { AddFundModal } from '@/components/add-fund-modal'
-import { LoadDataModal } from '@/components/load-data-modal'
 import { SaveDataModal } from '@/components/save-data-modal'
 
 import type {
@@ -56,6 +51,7 @@ import type {
   PersonalFinanceInfoOptions,
   RetirementCalculatorOptions
 } from '@/models/retirement-calculator.model'
+import { useAuthStore } from '@/stores/auth.store'
 
 export default defineComponent({
   name: 'retirement-page',
@@ -63,7 +59,6 @@ export default defineComponent({
     RetirementCalculator,
     PersonalFinanceInfo,
     AddFundModal,
-    LoadDataModal,
     SaveDataModal
   },
   emits: {},
@@ -84,10 +79,15 @@ export default defineComponent({
         yearsToRetirement: 41,
         monthlyContribution: 5833
       } as RetirementCalculatorOptions,
-      funds: [] as FundFeesOptions[]
+      funds: [
+        { name: 'קרן הפנסיה שלי', accumulationAnnualFee: 0, depositFee: 0, investmentReturnRate: 0 }
+      ] as FundFeesOptions[],
+      authStore: useAuthStore()
     }
   },
-  created() {},
+  async created() {
+    await this.loadRetirementData()
+  },
   computed: {
     fundsOptions(): RetirementCalculatorOptions {
       return {
@@ -100,6 +100,16 @@ export default defineComponent({
     }
   },
   methods: {
+    async loadRetirementData() {
+      const userId = this.authStore.loggedInUserId
+      if (!userId) return
+      const loadedData = localStorage.getItem(userId)
+      if (loadedData) {
+        const parsedData = JSON.parse(loadedData)
+        this.personalFinancialInfo = parsedData.personalFinancialInfo
+        this.funds = parsedData.funds
+      }
+    },
     openAddFundModal() {
       this.isAddFundModalOpen = true
     },
@@ -115,24 +125,21 @@ export default defineComponent({
     updateFund(index: number, fund: FundFeesOptions) {
       this.funds[index] = fund
     },
-    loadData(idNumber: string) {
-      const loadedData = localStorage.getItem(idNumber)
-      if (loadedData) {
-        const parsedData = JSON.parse(loadedData)
-        this.personalFinancialInfo = parsedData.personalFinancialInfo
-        this.funds = parsedData.funds
+    saveRetirementData() {
+      const userId = this.authStore.loggedInUserId
+      if (!userId) return
+      let userDataStr = localStorage.getItem(userId)
+      if (!userDataStr) {
+        localStorage.setItem(
+          userId,
+          JSON.stringify({ personalFinancialInfo: this.personalFinancialInfo, funds: this.funds })
+        )
+      } else {
+        const userData = JSON.parse(userDataStr)
+        userData.personalFinancialInfo = this.personalFinancialInfo
+        userData.funds = this.funds
+        localStorage.setItem(userId, JSON.stringify(userData))
       }
-      this.isLoadModalOpen = false
-    },
-    saveData(idNumber: string) {
-      if (!idNumber) {
-        this.isSaveModalOpen = false
-        return
-      }
-      localStorage.setItem(
-        idNumber,
-        JSON.stringify({ personalFinancialInfo: this.personalFinancialInfo, funds: this.funds })
-      )
       this.isSaveModalOpen = false
     }
   }

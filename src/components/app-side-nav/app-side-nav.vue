@@ -1,27 +1,36 @@
 <template>
-  <section class="app-side-nav">
-    <div class="logo">
-      <router-link to="/"> Horizon </router-link>
-    </div>
+  <section class="app-side-nav column justify-between">
+    <section>
+      <div class="logo">
+        <router-link to="/"> Horizon </router-link>
+      </div>
+      <nav>
+        <ul>
+          <li
+            :class="$route.path === '/retirement' ? 'active' : ''"
+            @click="$router.push('/retirement')"
+          >
+            <router-link to="/retirement">תכנון פנסיה</router-link>
+          </li>
+          <li
+            :class="$route.path === '/personal-info' ? 'active' : ''"
+            @click="$router.push('/personal-info')"
+          >
+            <router-link to="/personal-info">קרן השתלמות</router-link>
+          </li>
+          <li
+            :class="$route.path === '/investment' ? 'active' : ''"
+            @click="$router.push('/investment')"
+          >
+            <router-link to="/investment">השקעות נוספות</router-link>
+          </li>
+        </ul>
+      </nav>
+    </section>
     <nav>
       <ul>
-        <li
-          :class="$route.path === '/retirement' ? 'active' : ''"
-          @click="$router.push('/retirement')"
-        >
-          <router-link to="/retirement">תכנון פנסיה</router-link>
-        </li>
-        <li
-          :class="$route.path === '/personal-info' ? 'active' : ''"
-          @click="$router.push('/personal-info')"
-        >
-          <router-link to="/personal-info">קרן השתלמות</router-link>
-        </li>
-        <li
-          :class="$route.path === '/investment' ? 'active' : ''"
-          @click="$router.push('/investment')"
-        >
-          <router-link to="/investment">השקעות נוספות</router-link>
+        <li :class="$route.path === '/login' ? 'active' : ''" @click="$router.push('/login')">
+          <router-link to="/login">{{ isLoggedIn ? 'התנתקות' : 'התחברות' }}</router-link>
         </li>
       </ul>
     </nav>
@@ -29,6 +38,7 @@
 </template>
 
 <script lang="ts">
+import { useAuthStore } from '@/stores/auth.store'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -40,7 +50,11 @@ export default defineComponent({
     return {}
   },
   created() {},
-  computed: {},
+  computed: {
+    isLoggedIn() {
+      return useAuthStore().isLoggedIn
+    }
+  },
   methods: {}
 })
 </script>
