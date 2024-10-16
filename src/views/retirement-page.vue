@@ -10,7 +10,6 @@
         :options="personalFinancialInfo"
         @update-options="personalFinancialInfo = $event"
       />
-      <div></div>
     </div>
     <q-separator />
     <h5 class="sub-title">השוואת דמי ניהול בין קרנות</h5>

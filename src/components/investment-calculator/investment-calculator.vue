@@ -71,6 +71,7 @@
         :model-value="options.reduceTaxAnnually"
         @update:model-value="updateOptions('reduceTaxAnnually', $event)"
         label="תשלום מס שנתי"
+        left-label
       />
     </div>
     <div
@@ -130,40 +131,32 @@ export default {
   computed: {
     retirementFundCalculation(): Array<Array<string>> {
       const monthlyAccumulationFeeRate = this.options.accumulationAnnualFee / 12 / 100
-      const monthlyDepositFeeRate = this.options.depositFee / 100
-      const monthlyProfitRate = this.options.investmentReturnRate / 12 / 100
+      const depositFeeRate = this.options.depositFee / 100
 
       let totalAmount = this.options.currentAccumulatedAmount
       let totalFees = 0
       let totalTax = 0
       const yearlyCalculations = []
+      let totalProfit = 0
 
       const startDate = new Date()
 
       for (let month = 1; month <= this.options.yearsToRetirement * 12; month++) {
-        const currentDate = new Date(startDate)
-        currentDate.setMonth(startDate.getMonth() + month - 1)
+        // Add monthly contribution
+        totalAmount = this.addOneTimeDeposits(startDate, totalAmount, month, depositFeeRate)
+        totalAmount += this.options.monthlyContribution * (1 - depositFeeRate)
 
-        // Apply one-time deposits at the correct month
-        this.options.oneTimeDeposits.forEach((deposit) => {
-          const date = new Date(deposit.date)
-          const depositMonth =
-            (date.getFullYear() - startDate.getFullYear()) * 12 +
-            (date.getMonth() - startDate.getMonth()) +
-            1
+        // Calculate profit
+        const monthlyProfit =
+          totalAmount * (this.options.investmentReturnRate / 100 + 1) ** (1 / 12) - totalAmount
 
-          if (depositMonth === month) {
-            totalAmount += deposit.amount
-          }
-        })
-
-        totalAmount += this.options.monthlyContribution * (1 - monthlyDepositFeeRate)
-        totalAmount *= (this.options.investmentReturnRate / 100 + 1) ** (1 / 12)
+        totalAmount += monthlyProfit
 
         // Calculate accumulation and deposit fees
         const accumulationFee = totalAmount * monthlyAccumulationFeeRate
-        const depositFee = this.options.monthlyContribution * monthlyDepositFeeRate
+        const depositFee = this.options.monthlyContribution * depositFeeRate
 
+        totalProfit += monthlyProfit - accumulationFee
         // Add fees to the total
         totalFees += accumulationFee + depositFee
 
@@ -173,31 +166,20 @@ export default {
         // Apply income tax logic at the end of each year
         if (month % 12 === 0) {
           // Calculate income tax for the year's profit
-          const yearlyProfit = totalAmount * monthlyProfitRate * 12
-          const incomeTaxAmount = (yearlyProfit * this.options.incomeTaxRate) / 100
+          const incomeTaxAmount = (totalProfit * this.options.incomeTaxRate) / 100
+
           // Store yearly calculations: [totalAmountAfterFees, totalFees, incomeTaxAmount]
           yearlyCalculations.push([
-            Intl.NumberFormat('he-IL', {
-              style: 'currency',
-              currency: 'ILS',
-              maximumFractionDigits: 0
-            }).format(totalAmount),
-            Intl.NumberFormat('he-IL', {
-              style: 'currency',
-              currency: 'ILS',
-              maximumFractionDigits: 0
-            }).format(totalFees),
-            Intl.NumberFormat('he-IL', {
-              style: 'currency',
-              currency: 'ILS',
-              maximumFractionDigits: 0
-            }).format(incomeTaxAmount)
+            this.shekelFormat(totalAmount),
+            this.shekelFormat(totalFees),
+            this.shekelFormat(incomeTaxAmount)
           ])
 
           // Deduct income tax only if `reduceTaxAnnually` is true
           if (this.options.reduceTaxAnnually) {
             totalAmount -= incomeTaxAmount
             totalTax += incomeTaxAmount
+            totalProfit = 0
           }
         }
       }
@@ -206,6 +188,36 @@ export default {
     }
   },
   methods: {
+    shekelFormat(amount: number): string {
+      return new Intl.NumberFormat('he-IL', {
+        style: 'currency',
+        currency: 'ILS',
+        maximumFractionDigits: 0
+      }).format(amount)
+    },
+    addOneTimeDeposits(
+      startDate: Date,
+      totalAmount: number,
+      month: number,
+      depositFeeRate: number
+    ) {
+      const currentDate = new Date(startDate)
+      currentDate.setMonth(startDate.getMonth() + month - 1)
+
+      // Apply one-time deposits at the correct month
+      this.options.oneTimeDeposits.forEach((deposit) => {
+        const date = new Date(deposit.date)
+        const depositMonth =
+          (date.getFullYear() - startDate.getFullYear()) * 12 +
+          (date.getMonth() - startDate.getMonth()) +
+          1
+
+        if (depositMonth === month) {
+          totalAmount += deposit.amount * (1 - depositFeeRate)
+        }
+      })
+      return totalAmount
+    },
     addDeposit() {
       this.updateOptions('oneTimeDeposits', [
         ...this.options.oneTimeDeposits,
