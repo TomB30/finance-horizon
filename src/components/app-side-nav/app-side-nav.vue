@@ -7,6 +7,12 @@
       <nav>
         <ul>
           <li
+            :class="$route.path === '/overview' ? 'active' : ''"
+            @click="$router.push('/overview')"
+          >
+            <router-link to="/overview">מבט על</router-link>
+          </li>
+          <li
             :class="$route.path === '/retirement' ? 'active' : ''"
             @click="$router.push('/retirement')"
           >

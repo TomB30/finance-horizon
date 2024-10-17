@@ -1,7 +1,7 @@
 <template>
   <section class="login-page">
     <div class="login-card">
-      <h5>Horzion</h5>
+      <h5>כניסה לחשבון שלי</h5>
       <div v-if="!isLoggedIn && !isSignUp" class="login-form">
         <q-card-section class="column q-gutter-sm">
           <q-input
