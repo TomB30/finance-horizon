@@ -41,10 +41,10 @@
         <th>דמי ניהול</th>
       </thead>
       <tbody>
-        <tr v-for="i in +options.yearsToRetirement" :key="i">
-          <td>{{ i }}</td>
-          <td>{{ calculateRetirementFund(i)[0] }}</td>
-          <td>{{ calculateRetirementFund(i)[1] }}</td>
+        <tr v-for="(year, i) in retirementFundOverYears" :key="i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ year[0] }}</td>
+          <td>{{ year[1] }}</td>
         </tr>
       </tbody>
     </table>
@@ -58,6 +58,7 @@ import type {
   FundFeesOptions,
   RetirementCalculatorOptions
 } from '@/models/retirement-calculator.model'
+import { retirementUtils } from '@/utils/retirement.utils'
 
 export default defineComponent({
   name: 'retirement-calculator',
@@ -76,43 +77,19 @@ export default defineComponent({
       default: false
     }
   },
+  computed: {
+    retirementFundOverYears(): string[][] {
+      return retirementUtils.calculateRetirement(
+        this.options.currentAccumulatedAmount,
+        this.options.monthlyContribution,
+        this.fundOptions.depositFee,
+        this.fundOptions.accumulationAnnualFee,
+        this.fundOptions.investmentReturnRate,
+        this.options.yearsToRetirement
+      )
+    }
+  },
   methods: {
-    calculateRetirementFund(yearsToRetirement: number) {
-      // Convert annual rates to monthly rates
-      const monthlyDepositFeeRate = this.fundOptions.depositFee / 100
-      let totalFees = 0
-
-      const monthlyContributionDepositFee = this.options.monthlyContribution * monthlyDepositFeeRate
-      const monthlyContributionAfterFee =
-        this.options.monthlyContribution - monthlyContributionDepositFee
-      let totalAmount = this.options.currentAccumulatedAmount
-
-      for (let month = 1; month <= yearsToRetirement * 12; month++) {
-        totalAmount += monthlyContributionAfterFee
-
-        totalAmount *= (this.fundOptions.investmentReturnRate / 100 + 1) ** (1 / 12)
-
-        const accumulationFee = (totalAmount * this.fundOptions.accumulationAnnualFee) / 12 / 100
-
-        totalAmount -= accumulationFee
-
-        totalFees += accumulationFee + monthlyContributionDepositFee
-      }
-
-      const formattedTotalAmount = Intl.NumberFormat('he-IL', {
-        style: 'currency',
-        currency: 'ILS',
-        maximumFractionDigits: 0
-      }).format(totalAmount)
-
-      const formattedTotalFees = Intl.NumberFormat('he-IL', {
-        style: 'currency',
-        currency: 'ILS',
-        maximumFractionDigits: 0
-      }).format(totalFees)
-
-      return [formattedTotalAmount, formattedTotalFees]
-    },
     updateFundOptions(key: string, value: string | number) {
       this.$emit('update-fund-options', { ...this.fundOptions, [key]: value })
     },
