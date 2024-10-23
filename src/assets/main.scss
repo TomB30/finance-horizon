@@ -1,3 +1,4 @@
+@import './typography.scss';
 @import './input.scss';
 @import './button.scss';
 
@@ -9,6 +10,7 @@ body {
   margin: 0;
   color: rgba(0, 0, 0, 0.87);
   font-family:
+    'primary',
     'Inter',
     -apple-system,
     BlinkMacSystemFont,
