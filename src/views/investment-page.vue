@@ -11,28 +11,39 @@
       </template>
       <div class="column q-gutter-md">
         <q-btn color="primary" @click="addInvestment">הוסף השקעה</q-btn>
-        <q-btn color="primary" @click="saveInvestmentsData">שמור נתונים</q-btn>
+        <q-btn color="primary" @click="isSaveModalOpen = true">שמור נתונים</q-btn>
       </div>
     </div>
+
+    <save-data-modal
+      :model-value="isSaveModalOpen"
+      @save-data="saveInvestmentsData"
+      @close="isSaveModalOpen = false"
+    />
   </section>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-
+// Components
 import { InvestmentCalculator } from '@/components/investment-calculator'
+import { SaveDataModal } from '@/components/save-data-modal'
+// Models
 import type { InvestmentCalculatorOptions } from '@/models/retirement-calculator.model'
+// Stores
 import { useAuthStore } from '@/stores/auth.store'
 
 export default defineComponent({
   name: 'investment-page',
   components: {
-    InvestmentCalculator
+    InvestmentCalculator,
+    SaveDataModal
   },
   emits: {},
   props: {},
   data() {
     return {
+      isSaveModalOpen: false,
       investments: [
         {
           name: '',
@@ -55,7 +66,8 @@ export default defineComponent({
   },
   computed: {},
   methods: {
-    addInvestment() {
+    addInvestment(): void {
+      console.log('this.investments =========>', this.investments)
       this.investments.push({
         name: '',
         currentAccumulatedAmount: 0,
@@ -76,13 +88,32 @@ export default defineComponent({
       const userId = this.authStore.loggedInUserId
       if (!userId) return
       const userDataStr = localStorage.getItem(userId)
-      if (!userDataStr) return
+      if (!userDataStr) {
+        this.investments = [
+          {
+            name: '',
+            currentAccumulatedAmount: 0,
+            monthlyContribution: 0,
+            accumulationAnnualFee: 0,
+            depositFee: 0,
+            investmentReturnRate: 0,
+            incomeTaxRate: 0,
+            yearsToRetirement: 0,
+            reduceTaxAnnually: true,
+            oneTimeDeposits: []
+          }
+        ]
+        return
+      }
       const userData = JSON.parse(userDataStr)
-      this.investments = userData.investments
+      this.investments = userData.investments || []
     },
     saveInvestmentsData() {
       const userId = this.authStore.loggedInUserId
-      if (!userId) return
+      if (!userId) {
+        this.isSaveModalOpen = false
+        return
+      }
       const userDataStr = localStorage.getItem(userId)
       if (!userDataStr) {
         localStorage.setItem(userId, JSON.stringify({ investments: this.investments }))
@@ -91,6 +122,7 @@ export default defineComponent({
         userData.investments = this.investments
         localStorage.setItem(userId, JSON.stringify(userData))
       }
+      this.isSaveModalOpen = false
     }
   }
 })

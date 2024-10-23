@@ -1,6 +1,6 @@
 <template>
   <section class="app">
-    <app-side-nav />
+    <app-side-nav v-if="!$route.meta.hideMenu" />
     <main class="app-content">
       <app-header v-if="$route.meta.requiresAuth" />
       <div class="page">
@@ -24,6 +24,11 @@ export default defineComponent({
   },
   async created() {
     await useAuthStore().getAuthenticatedUser()
+  },
+  computed: {
+    mainHeight(): string {
+      return `calc(100vh - ${this.$route.meta.requiresAuth ? 60 : 0}px)`
+    }
   }
 })
 </script>
@@ -37,7 +42,7 @@ export default defineComponent({
     flex-direction: column;
     flex: 1;
     .page {
-      height: calc(100vh - 60px);
+      height: v-bind(mainHeight);
       overflow: scroll;
     }
   }

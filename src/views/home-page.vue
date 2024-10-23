@@ -7,7 +7,7 @@
         את עתידך הפיננסי.
       </p>
       <div class="hero-buttons">
-        <q-btn color="primary" class="q-ml-md">התחל עכשיו</q-btn>
+        <q-btn color="primary" class="q-ml-md" @click="$router.push('/login')">התחל עכשיו</q-btn>
         <q-btn color="primary" flat>למד עוד</q-btn>
       </div>
     </section>

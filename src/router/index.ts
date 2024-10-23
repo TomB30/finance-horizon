@@ -13,7 +13,10 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: HomePage
+      component: HomePage,
+      meta: {
+        hideMenu: true
+      }
     },
     {
       path: '/overview',

@@ -3,13 +3,13 @@
     <q-btn class="remove-btn" round size="xs" @click="$emit('remove-fund')">
       <span class="icon">✕</span>
     </q-btn>
-    <div class="fund-name" contenteditable @blur="updateOptions('name', $event.target.innerText)">
+    <div class="fund-name" contenteditable @blur="updateName">
       {{ options.name }}
     </div>
     <div class="wrapper">
       <q-input
         :model-value="options.currentAccumulatedAmount"
-        @update:model-value="updateOptions('currentAccumulatedAmount', +$event)"
+        @update:model-value="updateAccumulatedAmount"
         label="סכום צבירה נוכחי"
         type="number"
         dense
@@ -17,7 +17,7 @@
       />
       <q-input
         :model-value="options.monthlyContribution"
-        @update:model-value="updateOptions('monthlyContribution', +$event)"
+        @update:model-value="updateMonthlyContribution"
         label="הפקדה חודשית"
         type="number"
         dense
@@ -26,7 +26,7 @@
 
       <q-input
         :model-value="options.accumulationAnnualFee"
-        @update:model-value="updateOptions('accumulationAnnualFee', +$event)"
+        @update:model-value="updateAccumulationAnnualFee"
         label="דמי ניהול מצבירה"
         type="number"
         step="0.01"
@@ -35,7 +35,7 @@
       />
       <q-input
         :model-value="options.depositFee"
-        @update:model-value="updateOptions('depositFee', +$event)"
+        @update:model-value="updateDepositFee"
         label="דמי ניהול מהפקדה"
         type="number"
         step="0.01"
@@ -44,7 +44,7 @@
       />
       <q-input
         :model-value="options.investmentReturnRate"
-        @update:model-value="updateOptions('investmentReturnRate', +$event)"
+        @update:model-value="updateReturnRate"
         label="אחוז תשואה שנתי"
         type="number"
         step="0.1"
@@ -53,7 +53,7 @@
       />
       <q-input
         :model-value="options.incomeTaxRate"
-        @update:model-value="updateOptions('incomeTaxRate', +$event)"
+        @update:model-value="updateIncomeTaxRate"
         label="שיעור מס הכנסה"
         type="number"
         dense
@@ -61,7 +61,7 @@
       />
       <q-input
         :model-value="options.yearsToRetirement"
-        @update:model-value="updateOptions('yearsToRetirement', +$event)"
+        @update:model-value="updateYearsToRetirement"
         label="שנים עד פרישה"
         type="number"
         dense
@@ -69,7 +69,7 @@
       <q-toggle
         dense
         :model-value="options.reduceTaxAnnually"
-        @update:model-value="updateOptions('reduceTaxAnnually', $event)"
+        @update:model-value="updateReduceTaxAnnually"
         label="תשלום מס שנתי"
         left-label
       />
@@ -83,13 +83,17 @@
         dense
         :model-value="singleDeposit.amount"
         type="number"
-        @update:model-value="updateOneTimeDeposits(i, { ...singleDeposit, amount: +$event })"
+        @update:model-value="
+          updateOneTimeDeposits(i, { ...singleDeposit, amount: $event ? +$event : 0 })
+        "
       />
       <q-input
         dense
         type="date"
         :model-value="singleDeposit.date"
-        @update:model-value="updateOneTimeDeposits(i, { ...singleDeposit, date: $event })"
+        @update:model-value="
+          updateOneTimeDeposits(i, { ...singleDeposit, date: String($event) || '' })
+        "
       />
       <q-btn flat round size="xs" @click="removeDeposit(i)">
         <span class="icon">✕</span>
@@ -118,11 +122,11 @@
 </template>
 
 <script lang="ts">
+import { defineComponent, type PropType } from 'vue'
 import type { InvestmentCalculatorOptions } from '@/models/retirement-calculator.model'
 import { investmentUtils } from '@/utils/investment.utils'
-import type { PropType } from 'vue'
 
-export default {
+export default defineComponent({
   props: {
     options: {
       type: Object as PropType<InvestmentCalculatorOptions>,
@@ -163,6 +167,40 @@ export default {
         this.options.oneTimeDeposits.map((d, i) => (i === index ? value : d))
       )
     },
+    updateName(event: Event) {
+      this.updateOptions('name', (event.target as HTMLDivElement).innerText)
+    },
+    updateAccumulatedAmount(value: string | number | null) {
+      if (value === null) return
+      this.updateOptions('currentAccumulatedAmount', +value)
+    },
+    updateMonthlyContribution(value: string | number | null) {
+      if (value === null) return
+      this.updateOptions('monthlyContribution', +value)
+    },
+    updateAccumulationAnnualFee(value: string | number | null) {
+      if (value === null) return
+      this.updateOptions('accumulationAnnualFee', +value)
+    },
+    updateDepositFee(value: string | number | null) {
+      if (value === null) return
+      this.updateOptions('depositFee', +value)
+    },
+    updateReturnRate(value: string | number | null) {
+      if (value === null) return
+      this.updateOptions('investmentReturnRate', +value)
+    },
+    updateIncomeTaxRate(value: string | number | null) {
+      if (value === null) return
+      this.updateOptions('incomeTaxRate', +value)
+    },
+    updateYearsToRetirement(value: string | number | null) {
+      if (value === null) return
+      this.updateOptions('yearsToRetirement', +value)
+    },
+    updateReduceTaxAnnually(value: boolean) {
+      this.updateOptions('reduceTaxAnnually', value)
+    },
     updateOptions(
       key: string,
       value: string | number | { amount: number; date: string }[] | boolean
@@ -170,7 +208,7 @@ export default {
       this.$emit('update-options', { ...this.options, [key]: value })
     }
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>
