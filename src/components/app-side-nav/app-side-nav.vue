@@ -2,7 +2,7 @@
   <section class="app-side-nav column justify-between">
     <section>
       <div class="logo">
-        <router-link to="/"> Horizon </router-link>
+        <router-link to="/"> FinanceWise </router-link>
       </div>
       <nav>
         <ul>

@@ -2,7 +2,7 @@
   <section class="app">
     <app-side-nav />
     <main class="app-content">
-      <app-header />
+      <app-header v-if="$route.meta.requiresAuth" />
       <div class="page">
         <RouterView />
       </div>

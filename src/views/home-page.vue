@@ -74,74 +74,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-/* Global Styles */
-// * {
-//   margin: 0;
-//   padding: 0;
-//   box-sizing: border-box;
-//   font-family: Arial, sans-serif;
-// }
-
-// body {
-//   background-color: #f9f9f9;
-//   color: #333;
-// }
-
-/* Header */
-// header {
-//   background-color: white;
-//   padding: 20px;
-//   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-// }
-
-// .container {
-//   display: flex;
-//   justify-content: space-between;
-//   align-items: center;
-//   max-width: 1200px;
-//   margin: 0 auto;
-// }
-
-// .logo h1 {
-//   font-size: 24px;
-// }
-
-// nav ul {
-//   display: flex;
-//   list-style: none;
-// }
-
-// nav ul li {
-//   margin-right: 20px;
-// }
-
-// nav ul li a {
-//   text-decoration: none;
-//   color: #333;
-//   font-size: 18px;
-// }
-
-// .auth-buttons button {
-//   margin-left: 10px;
-//   padding: 10px 15px;
-//   border: none;
-//   cursor: pointer;
-// }
-
-// .login-btn {
-//   background-color: white;
-//   border: 1px solid #333;
-// }
-
-// .signup-btn {
-//   background-color: #000;
-//   color: white;
-// }
-
-/* Hero Section */
 .hero {
   text-align: center;
-  padding: 80px 20px;
+  padding: 40px 20px 20px;
 }
 
 .hero h2 {
@@ -157,25 +92,6 @@ export default defineComponent({
   margin-top: 20px;
 }
 
-// .hero-buttons .primary-btn,
-// .hero-buttons .secondary-btn {
-//   padding: 10px 20px;
-//   border: none;
-//   cursor: pointer;
-//   margin: 0 10px;
-// }
-
-// .primary-btn {
-//   background-color: #000;
-//   color: white;
-// }
-
-// .secondary-btn {
-//   background-color: white;
-//   border: 1px solid #000;
-// }
-
-/* Tools Section */
 .tools-section {
   max-width: 1200px;
   margin: 40px auto;
@@ -213,12 +129,4 @@ export default defineComponent({
   font-size: 16px;
   margin-bottom: 20px;
 }
-
-// .tool-card button {
-//   padding: 10px 20px;
-//   background-color: #000;
-//   color: white;
-//   border: none;
-//   cursor: pointer;
-// }
 </style>
