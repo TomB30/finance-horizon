@@ -18,12 +18,12 @@
           >
             <router-link to="/retirement">תכנון פנסיה</router-link>
           </li>
-          <li
+          <!-- <li
             :class="$route.path === '/personal-info' ? 'active' : ''"
             @click="$router.push('/personal-info')"
           >
             <router-link to="/personal-info">קרן השתלמות</router-link>
-          </li>
+          </li> -->
           <li
             :class="$route.path === '/investment' ? 'active' : ''"
             @click="$router.push('/investment')"
@@ -35,6 +35,9 @@
     </section>
     <nav>
       <ul>
+        <li :class="$route.path === '/profile' ? 'active' : ''" @click="$router.push('/profile')">
+          <router-link to="/profile">האיזור האישי</router-link>
+        </li>
         <li :class="$route.path === '/login' ? 'active' : ''" @click="$router.push('/login')">
           <router-link to="/login">{{ isLoggedIn ? 'התנתקות' : 'התחברות' }}</router-link>
         </li>

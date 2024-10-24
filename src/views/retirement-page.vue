@@ -12,7 +12,7 @@
     </div>
     <q-separator />
     <h5 class="sub-title">השוואת דמי ניהול בין קרנות</h5>
-    <div class="row q-mr-md q-gutter-md items-start">
+    <div class="cacluator-list row q-mr-md items-start">
       <template v-for="(fund, i) in funds" :key="fund.name">
         <retirement-calculator
           :removeable="i !== 0"
@@ -159,10 +159,7 @@ export default defineComponent({
   padding: 8px 0;
 }
 
-.compare-list {
-  padding: 8px 16px;
-  display: flex;
-  justify-content: flex-start;
+.cacluator-list {
   gap: 16px;
 }
 

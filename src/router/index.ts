@@ -6,6 +6,7 @@ import LoginPage from '@/views/login-page.vue'
 import userPage from '@/views/user-page.vue'
 import { useAuthStore } from '@/stores/auth.store'
 import OverviewPage from '@/views/overview-page.vue'
+import ProfilePage from '@/views/user-profile-page.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,7 +22,10 @@ const router = createRouter({
     {
       path: '/overview',
       name: 'overview',
-      component: OverviewPage
+      component: OverviewPage,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/retirement',
@@ -48,6 +52,14 @@ const router = createRouter({
       path: '/user',
       name: 'user',
       component: userPage
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: ProfilePage,
+      meta: {
+        requiresAuth: true
+      }
     }
   ]
 })
